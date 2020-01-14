@@ -19,6 +19,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::middleware(['cross.request'])->group(function () {
     Route::any('login', 'UserController@login');
+    Route::any('editUser', 'UserController@editUser');
 });
 
 

@@ -3,6 +3,8 @@
 
 namespace App\Api\Controllers;
 
+use App\Api\Models\AdminUser;
+use App\Api\Validators\UserValidatorService;
 use Illuminate\Http\Request;
 
 class UserController extends BaseController
@@ -22,5 +24,17 @@ class UserController extends BaseController
             return $this->jsonError('密码长度不能少于6位');
         }
         return $this->jsonSuccess(['token' => md5($username.$password)]);
+    }
+
+    public function editUser(Request $request)
+    {
+        $data = $request->input();
+        $validator = UserValidatorService::validatorEdit($data);
+        if ($validator['status'] != 100) {
+            return $this->jsonError($validator['msg']);
+        }
+        $user = new AdminUser();
+        $result = $user->saveUser($request);
+        print_r($result);
     }
 }
